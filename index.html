@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destinova - Travel Experiences in Spain</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5dc;
+        }
+        header {
+            background: #333;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+        }
+        header img {
+            height: 50px;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin: 0 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .hero {
+            padding: 60px;
+            background: url('spanje3.jpg') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+        }
+        .section {
+            padding: 50px;
+            text-align: center;
+        }
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        .card img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.jpeg" alt="Destinova Logo">
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#tours">Popular Tours</a></li>
+                <li><a href="#activities">Activities</a></li>
+                <li><a href="#food">Food</a></li>
+                <li><a href="#culture">Culture</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section id="home" class="hero">
+        <h2>Discover Your Next Adventure in Spain</h2>
+        <input type="text" id="search" placeholder="Search for experiences...">
+        <button onclick="searchTours()">Search</button>
+        <button onclick="aiRecommend()">AI Recommend</button>
+    </section>
+    
+    <section id="tours" class="section">
+        <h2>Popular Tours in Spain</h2>
+        <div class="grid" id="tour-list"></div>
+    </section>
+    
+    <section id="activities" class="section">
+        <h2>Activities in Spain</h2>
+        <div class="grid" id="activity-list"></div>
+    </section>
+    
+    <section id="food" class="section">
+        <h2>Food Experiences in Spain</h2>
+        <div class="grid" id="food-list"></div>
+    </section>
+    
+    <section id="culture" class="section">
+        <h2>Culture & History in Spain</h2>
+        <div class="grid" id="culture-list"></div>
+    </section>
+    
+    <script>
+        const tours = [
+            { name: "Guadalest and Algar Waterfalls Tour", location: "Spain", image: "water.jpg" },
+            { name: "Seville: Cathedral and La Giralda Entry Ticket", location: "Spain", image: "cathedral.jpg" }
+        ];
+        
+        const activities = [
+            { name: "Hiking in the Picos de Europa", location: "Spain", image: "hik.png" },
+            { name: "Kayaking in Costa Brava", location: "Spain", image: "ka.png" }
+        ];
+        
+        const food = [
+            { name: "Wine Tasting in La Rioja", location: "Spain", image: "wijn.png" },
+            { name: "Tapas Tour in Barcelona", location: "Spain", image: "tap.png" }
+        ];
+        
+        const culture = [
+            { name: "Alhambra Palace Tour", location: "Spain", image: "al.png" },
+            { name: "Flamenco Show in Seville", location: "Spain", image: "flam.png" }
+        ];
+        
+        function displayItems(category, listId) {
+            const listElement = document.getElementById(listId);
+            listElement.innerHTML = "";
+            category.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "card";
+                card.innerHTML = `<img src="${item.image}" alt="${item.name}"><h3>${item.name}</h3><p>${item.location}</p>`;
+                listElement.appendChild(card);
+            });
+        }
+        
+        function searchTours() {
+            const query = document.getElementById("search").value.toLowerCase();
+            const filteredTours = tours.filter(tour => tour.name.toLowerCase().includes(query));
+            displayItems(filteredTours, "tour-list");
+        }
+        
+        function aiRecommend() {
+            const preferences = prompt("Enter your travel interests (e.g., hiking, history, food):").toLowerCase();
+            let recommendations = [];
+            
+            if (preferences.includes("hiking")) {
+                recommendations = recommendations.concat(activities.filter(a => a.name.toLowerCase().includes("hiking")));
+            }
+            if (preferences.includes("history")) {
+                recommendations = recommendations.concat(culture);
+            }
+            if (preferences.includes("food")) {
+                recommendations = recommendations.concat(food);
+            }
+            if (recommendations.length === 0) {
+                alert("No recommendations found for your preferences. Try different keywords.");
+                return;
+            }
+            
+            displayItems(recommendations, "tour-list");
+        }
+        
+        displayItems(tours, "tour-list");
+        displayItems(activities, "activity-list");
+        displayItems(food, "food-list");
+        displayItems(culture, "culture-list");
+    </script>
+</body>
+</html>
